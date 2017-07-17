@@ -29,23 +29,115 @@ public class GestionCustom : MonoBehaviour {
 	public Image[] ImageListeImage;
 	public Image[] ImageListeMouvement;
 	public Image[] ImageListeAttaque;
-	public Button[] listeImage;
-	public Button[] listeMouvement;
-	public Button[] listeAttaque;
+	public GameObject[] listeImage;
+	public GameObject[] listeMouvement;
+	public GameObject[] listeAttaque;
 
 	public Button ennemi, ennemi_I, boss;
 
 	public InputField inputVie, inputNb;
 
-	public int posImage, posMouvement, posAttaque;
-	public int type;
+	int posImage = -1, posMouvement = -1, posAttaque = -1;
+	int posListeImage = 1, posListeMouvement = 1, posListeAttaque = 1;
+	int type = -1;
 	public int x = 0, y = 0;
 
+	public Sprite[] spriteBoss, spriteEnnemi, spriteMouvement, spriteAttaque;
+	int nbPageEnnemi, nbPageMouvement, nbPageAttaque;
 
-	public int Anc_posImage, Anc_posMouvement, Anc_posAttaque;
-	public int Anc_vie, Anc_nb, Anc_type;
+
+	int Anc_posImage = -1, Anc_posMouvement = -1, Anc_posAttaque = -1;
+	int Anc_vie = -1, Anc_nb = -1, Anc_type = -1;
 
 	public int[,,] infoVague;
+
+	public void RefreshListe(){
+		for (int i = 0; i < 5; i++) {
+			try {
+				listeImage[i].SetActive(true);
+			if (type == 2)
+				ImageListeImage [i].sprite = spriteBoss [((posListeImage - 1) * 5) + i];
+			else
+				ImageListeImage [i].sprite = spriteEnnemi [((posListeImage - 1) * 5) + i];
+			if( (((posListeImage - 1) * 5) + i) == posImage)
+					listeImage[i].GetComponent<Button>().GetComponent<Image>().color  = Color.yellow;
+			else
+					listeImage[i].GetComponent<Button>().GetComponent<Image>().color  = Color.white;
+			}
+			catch{
+				listeImage [i].SetActive (false);
+			}
+
+			if (type == 2){
+				listeMouvement [i].SetActive (false);
+				listeAttaque [i].SetActive (false);
+				}
+			else{
+			try {
+				listeMouvement[i].SetActive(true);
+				ImageListeMouvement [i].sprite = spriteMouvement [((posListeMouvement - 1) * 5) + i];
+				if( (((posListeMouvement - 1) * 5) + i) == posMouvement)
+					listeMouvement[i].GetComponent<Button>().GetComponent<Image>().color  = Color.yellow;
+				else
+					listeMouvement[i].GetComponent<Button>().GetComponent<Image>().color  = Color.white;
+			}
+			catch{
+					listeMouvement [i].SetActive (false);
+			}
+
+			try {
+				listeAttaque[i].SetActive(true);
+				ImageListeAttaque [i].sprite = spriteAttaque [((posListeAttaque - 1) * 5) + i];
+				if( (((posListeAttaque - 1) * 5) + i) == posAttaque)
+					listeAttaque[i].GetComponent<Button>().GetComponent<Image>().color  = Color.yellow;
+				else
+					listeAttaque[i].GetComponent<Button>().GetComponent<Image>().color = Color.white;
+			}
+			catch{
+						listeAttaque [i].SetActive (false);
+				}
+			}
+		}
+	}
+
+
+
+	public void ChangeListeEnnemi(bool suivant){
+		if (suivant)
+			posListeImage++;
+		else
+			posListeImage--;
+		if (posListeImage > nbPageEnnemi)
+			posListeImage = 1;
+		if (posListeImage < 1)
+			posListeImage = nbPageEnnemi;
+		RefreshListe ();
+	}
+
+	public void ChangeListeAttaque(bool suivant){
+		if (suivant)
+			posListeAttaque++;
+		else
+			posListeAttaque--;
+		if (posListeAttaque > nbPageAttaque)
+			posListeAttaque = 1;
+		if (posListeAttaque < 1)
+			posListeAttaque = nbPageAttaque;
+		RefreshListe ();
+	}
+
+	public void ChangeListeMouvement(bool suivant){
+		if (suivant)
+			posListeMouvement++;
+		else
+			posListeMouvement--;
+		if (posListeMouvement > nbPageMouvement)
+			posListeMouvement = 1;
+		if (posListeMouvement < 1)
+			posListeMouvement = nbPageMouvement;
+		RefreshListe ();
+	}
+		
 
 	public void InitCustom (){
 
@@ -54,6 +146,7 @@ public class GestionCustom : MonoBehaviour {
 		x = camera.GetComponent<GestionGrillage> ().x;
 		y = camera.GetComponent<GestionGrillage> ().y;
 		int[] var3 = camera.GetComponent<GestionGrillage> ().GetInfo (camera.GetComponent<GestionGrillage> ().vague, y, x);
+
 
 		type = var3 [0];
 		posImage = var3 [1];
@@ -94,15 +187,29 @@ public class GestionCustom : MonoBehaviour {
 	}
 
 	public void EmptyPanel(){
-			inputVie.text = string.Empty;
-			inputNb.text = string.Empty;
+		inputVie.text = string.Empty;
+		inputNb.text = string.Empty;
 
 		type = -1;
 		posImage = -1;
 		posMouvement = -1;
 		posAttaque = -1;
+		Anc_vie = -1;
+		Anc_nb = -1;
 
-		SavePanel ();
+		posListeImage = 1;
+		posListeMouvement = 1;
+		posListeAttaque = 1;
+
+		Anc_type = type;
+		Anc_posImage = posImage;
+		Anc_posMouvement = posMouvement;
+		Anc_posAttaque = posAttaque;
+
+		int[] var1 = { Anc_type, Anc_type, Anc_posMouvement, Anc_posAttaque, Anc_vie, Anc_nb };
+		camera.GetComponent<GestionGrillage> ().SetInfo (var1, camera.GetComponent<GestionGrillage>().vague, y, x);
+
+		RefreshPanel ();
 	}
 
 	void RefreshPanel(){
@@ -198,7 +305,8 @@ public class GestionCustom : MonoBehaviour {
 			break;
 		}
 
-			
+		GetPage ();
+		RefreshListe ();
 
 	}
 
@@ -211,17 +319,22 @@ public class GestionCustom : MonoBehaviour {
 		if (inputNb.text == string.Empty || int.Parse(inputNb.text) < 0)
 			Anc_nb = 1;
 		else
-				Anc_nb = int.Parse(inputNb.text);
+			Anc_nb = int.Parse(inputNb.text);
+
+		inputVie.text = Anc_vie.ToString ();
+		inputNb.text = Anc_nb.ToString ();
+
 
 		Anc_type = type;
 		Anc_posImage = posImage;
 		Anc_posMouvement = posMouvement;
 		Anc_posAttaque = posAttaque;
 
-		int[] var1 = { Anc_type, Anc_type, Anc_posMouvement, Anc_posAttaque, Anc_vie, Anc_nb };
-		camera.GetComponent<GestionGrillage> ().SetInfo (var1, camera.GetComponent<GestionGrillage>().vague, y, x);
 
+		int[] var1 = { type, posImage, posMouvement, posAttaque, Anc_vie, Anc_nb };
+		camera.GetComponent<GestionGrillage> ().SetInfo (var1, camera.GetComponent<GestionGrillage>().vague, y, x);
 		RefreshPanel ();
+		RefreshListe ();
 	}
 
 
@@ -234,6 +347,52 @@ public class GestionCustom : MonoBehaviour {
 	// Update is called once per frame
 	public void SwitchType (int var1) {
 		type = var1;
+		nbPageEnnemi = 0;
+
+		GetPage ();
+		RefreshListe ();
 		RefreshPanel ();
 	}
+
+	public void SwitchEnnemi (int var1) {
+		posImage = ((posListeImage - 1) * 5) + var1;
+		RefreshPanel ();
+	}
+
+	public void SwitchAttaque (int var1) {
+		posAttaque = ((posListeAttaque - 1) * 5) + var1;
+		RefreshPanel ();
+	}
+
+	public void SwitchMouvement (int var1) {
+		posMouvement = ((posListeMouvement - 1) * 5) + var1;
+		RefreshPanel ();
+	}
+
+
+	public void GetPage(){
+		int nbTotal = 0;
+
+		if (type == 2)
+			nbTotal = spriteBoss.Length;
+		else
+			nbTotal = spriteEnnemi.Length;
+		if (((nbTotal % 5) == 0) && ((nbTotal >= 5)))
+			nbPageEnnemi = (nbTotal / 5);
+		else
+			nbPageEnnemi = (nbTotal / 5) + 1;
+
+		nbTotal = spriteMouvement.Length;
+		if (((nbTotal % 5) == 0) && ((nbTotal >= 5)))
+			nbPageMouvement = (nbTotal / 5);
+		else
+			nbPageMouvement = (nbTotal / 5) + 1;
+
+		nbTotal = spriteAttaque.Length;
+		if (((nbTotal % 5) == 0) && ((nbTotal >= 5)))
+			nbPageAttaque = (nbTotal / 5);
+		else
+			nbPageAttaque = (nbTotal / 5) + 1;
+	}
+
 }

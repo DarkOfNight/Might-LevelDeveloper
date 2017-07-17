@@ -18,14 +18,145 @@ public class GestionGrillage : MonoBehaviour {
 	 *  -1 = rien
 	 */ 
 
-	public int level, chapitre, vague;
+	public int level = 0, chapitre = 0, vague = 0;
+	public Text level_T, chapitre_T, vague_T;
 
-	public Image[,] grille = new Image[7,7];
+	public Image[] CadreImage0 = new Image[7];
+	public Image[] CadreImage1 = new Image[7];
+	public Image[] CadreImage2 = new Image[7];
+	public Image[] CadreImage3 = new Image[7];
+	public Image[] CadreImage4 = new Image[7];
+	public Image[] CadreImage5 = new Image[7];
+	public Image[] CadreImage6 = new Image[7];
+
+	public Sprite[] ennemi, boss;
 
 
 	// Use this for initialization
 	void Start () {
-		ResetCadre ();
+		ResetCadre (true);
+	}
+
+	public void ChangeLevel(bool suivant){
+		if (suivant)
+			level++;
+		else
+			level--;
+		if (level < 0)
+			level = 254;
+		if (level > 254)
+			level = 0;
+
+		level_T.text = (level + 1).ToString ();
+	}
+	public void ChangeChapitre(bool suivant){
+		if (suivant)
+			chapitre++;
+		else
+			chapitre--;
+		if (chapitre < 0)
+			chapitre = 254;
+		if (chapitre > 254)
+			chapitre = 0;
+
+		chapitre_T.text = (chapitre + 1).ToString ();
+	}
+	public void ChangeVague(bool suivant){
+		if (suivant)
+			vague++;
+		else
+			vague--;
+		if (vague < 0)
+			vague = 254;
+		if (vague > 254)
+			vague = 0;
+
+		vague_T.text = (vague + 1).ToString ();
+		RefreshCadre ();
+	}
+
+	public void RefreshCadre(){
+		for (int i = 0; i < 7; i++)
+			for (int j = 0; j < 7; j++) {
+				if (cadrillage [vague, i, j, 0] == 2)
+					ApplyCadre (i, j, true);
+				else if (cadrillage [vague, i, j, 0] >= 0)
+					ApplyCadre (i, j, false);
+				else EmptyCadre (i, j);
+			}
+	}
+
+	void ApplyCadre(int y, int x, bool isBoss){
+		switch (y) {
+		case 0:
+			if (isBoss)
+				CadreImage0 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+			else
+				CadreImage0 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+			break;
+		case 1:
+			if (isBoss)
+				CadreImage1 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+			else
+				CadreImage1 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+			break;
+		case 2:
+			if (isBoss)
+				CadreImage2 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+			else
+				CadreImage2 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+			break;
+		case 3:
+			if (isBoss)
+				CadreImage3 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+			else
+				CadreImage3 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+			break;
+		case 4:
+			if (isBoss)
+				CadreImage4 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+			else
+				CadreImage4 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+			break;
+		case 5:
+			if (isBoss)
+				CadreImage5 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+			else
+				CadreImage5 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+			break;
+		case 6:
+			if (isBoss)
+				CadreImage6 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+			else
+				CadreImage6 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+			break;
+		}
+	}
+
+	void EmptyCadre(int y, int x){
+		switch (y) {
+		case 0:
+			CadreImage0 [x].sprite = null;
+			break;
+		case 1:
+			CadreImage1 [x].sprite = null;
+			break;
+		case 2:
+			CadreImage2 [x].sprite = null;
+			break;
+		case 3:
+			CadreImage3 [x].sprite = null;
+			break;
+		case 4:
+			CadreImage4 [x].sprite = null;
+			break;
+		case 5:
+			CadreImage5 [x].sprite = null;
+			break;
+		case 6:
+			CadreImage6 [x].sprite = null;
+			break;
+		}
 	}
 
 	public int TestCadreEmpty(){
@@ -43,13 +174,21 @@ public class GestionGrillage : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	public void ResetCadre () {
-		cadrillage = new int[255,7,7,6];
-		for (int i = 0; i < 255; i++)
+	public void ResetCadre (bool integral) {
+		if (integral) {
+			cadrillage = new int[255, 7, 7, 6];
+			for (int i = 0; i < 255; i++)
+				for (int j = 0; j < 7; j++)
+					for (int k = 0; k < 7; k++)
+						for (int l = 0; l < 6; l++)
+							cadrillage [i, j, k, l] = -1;
+		} else {
+
 			for (int j = 0; j < 7; j++)
 				for (int k = 0; k < 7; k++)
 					for (int l = 0; l < 6; l++)
-						cadrillage [i, j, k, l] = -1;			
+						cadrillage [vague, j, k, l] = -1;
+		}
 	}
 
 	public int[,,] GetVague(int var1){
