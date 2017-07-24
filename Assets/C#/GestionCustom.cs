@@ -206,7 +206,16 @@ public class GestionCustom : MonoBehaviour {
 		Anc_posMouvement = posMouvement;
 		Anc_posAttaque = posAttaque;
 
-		int[] var1 = { Anc_type, Anc_type, Anc_posMouvement, Anc_posAttaque, Anc_vie, Anc_nb };
+		int[] var1 = new int[10];
+		for (int i = 0; i < 10; i ++)
+			var1[i] = -1;
+
+		var1 [0] = Anc_type;
+		var1 [1] = Anc_posImage;
+		var1 [2] = Anc_posMouvement;
+		var1 [3] = Anc_posAttaque;
+		var1 [4] = Anc_vie;
+		var1 [5] = Anc_nb;
 		camera.GetComponent<GestionGrillage> ().SetInfo (var1, camera.GetComponent<GestionGrillage>().vague, y, x);
 
 		RefreshPanel ();

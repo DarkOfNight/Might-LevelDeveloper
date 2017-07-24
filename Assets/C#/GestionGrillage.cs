@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
-
+using UnityEditor;
+using System.IO;
 public class GestionGrillage : MonoBehaviour {
 
-	public int[,,,] cadrillage = new int[255,7,7,6];
+	public int[,,,] cadrillage = new int[255,7,7,10];
 	/*
 	 * 0 - type			0 normal 1 infini 2 boss
 	 * 1 - image		0 ... 1 ... 2 ... ...
@@ -28,6 +29,8 @@ public class GestionGrillage : MonoBehaviour {
 	public Image[] CadreImage4 = new Image[7];
 	public Image[] CadreImage5 = new Image[7];
 	public Image[] CadreImage6 = new Image[7];
+
+	public Text open, save, inject;
 
 	public Sprite[] ennemi, boss;
 
@@ -176,26 +179,27 @@ public class GestionGrillage : MonoBehaviour {
 	// Update is called once per frame
 	public void ResetCadre (bool integral) {
 		if (integral) {
-			cadrillage = new int[255, 7, 7, 6];
+			cadrillage = new int[255,7,7,10];
 			for (int i = 0; i < 255; i++)
 				for (int j = 0; j < 7; j++)
 					for (int k = 0; k < 7; k++)
-						for (int l = 0; l < 6; l++)
+						for (int l = 0; l < 10; l++)
 							cadrillage [i, j, k, l] = -1;
 		} else {
 
 			for (int j = 0; j < 7; j++)
 				for (int k = 0; k < 7; k++)
-					for (int l = 0; l < 6; l++)
+					for (int l = 0; l < 10; l++)
 						cadrillage [vague, j, k, l] = -1;
 		}
+		RefreshCadre ();
 	}
 
 	public int[,,] GetVague(int var1){
-		int[,,] var2 = new int[7,7,6];
+		int[,,] var2 = new int[7,7,10];
 		for (int j = 0; j < 7; j++)
 			for (int k = 0; k < 7; k++)
-				for (int l = 0; l < 6; l++)
+				for (int l = 0; l < 10; l++)
 					var2[j, k, l] =  cadrillage [var1, j, k, l];	
 		return var2;
 	}
@@ -203,13 +207,13 @@ public class GestionGrillage : MonoBehaviour {
 	public void SetVague(int[,,] var1, int var2){
 		for (int j = 0; j < 7; j++)
 			for (int k = 0; k < 7; k++)
-				for (int l = 0; l < 6; l++)
+				for (int l = 0; l < 10; l++)
 					cadrillage [var2, j, k, l] = var1[j, k, l];	
 	}
 
 	public int[] GetInfo(int var1, int var2, int var3){
-		int[] var4 = new int[6];
-			for (int l = 0; l < 6; l++)
+		int[] var4 = new int[10];
+			for (int l = 0; l < 10; l++)
 				var4[l] = cadrillage [var1, var2, var3, l];
 		return var4;
 	}
@@ -217,8 +221,13 @@ public class GestionGrillage : MonoBehaviour {
 
 
 	public void SetInfo(int[] var1, int var2, int var3, int var4){
-		for (int l = 0; l < 6; l++)
-			cadrillage [var2, var3, var4, l] = var1[l];;
+		for (int l = 0; l < 10; l++) {
+			try{
+			cadrillage [var2, var3, var4, l] = var1 [l];
+			}catch{
+				cadrillage [var2, var3, var4, l] = -1;
+			}
+		}
 	}
 
 	public int x, y;
@@ -228,5 +237,131 @@ public class GestionGrillage : MonoBehaviour {
 	public void SetY(int i) {
 		y= i;
 	}
+
+
+	public void SaveAs(){
+
+
+		if (PlayerPrefs.GetString ("Address.Level", "NULL") == "NULL") {
+			string home = (Environment.OSVersion.Platform == PlatformID.Unix || 
+				Environment.OSVersion.Platform == PlatformID.MacOSX)
+				? Environment.GetEnvironmentVariable("HOME")
+				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+			PlayerPrefs.SetString ("Address.Level", EditorUtility.OpenFolderPanel ("Dossier des niveaux \".lvlcrt\" (Hors Jeu)", home, "Levels"));
+		}
+
+		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Level") + @"\" + (chapitre + 1).ToString() + "-" + (level +1 ).ToString() + ".lvlcrt")) {
+
+			for (int v = 0; v < 255; v++) {
+				string line = "";
+				for (int y = 0; y < 7; y++) {
+					for (int x = 0; x < 7; x++) {
+						for (int i = 0; i < 10; i++) {
+							save.text = (v + 1).ToString () + " / 255";
+							if (i != 0)
+								line += "|";
+							line += cadrillage [v, y, x, i].ToString ();
+							//Debug.Log (cadrillage [v, y, x, i]);
+						}
+						if (x < 6)
+							line += ";";
+					}
+					if (y < 6)
+						line += ",";
+				}
+				outputFile.WriteLine (line);
+			}
+		}
+		save.text = "Enregistrer";
+
+
+	}
+
+
+	public void Open(){
+
+			string home = (Environment.OSVersion.Platform == PlatformID.Unix || 
+				Environment.OSVersion.Platform == PlatformID.MacOSX)
+				? Environment.GetEnvironmentVariable("HOME")
+				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+		string chemin = EditorUtility.OpenFilePanel ("Sélectionner le Niveau Might", home, "lvlcrt");
+
+
+
+
+		string[] inputFile = System.IO.File.ReadAllLines(chemin);
+
+		int v = 0;
+		foreach (string line in inputFile) {
+			open.text = (v + 1).ToString () + " / 255";
+			for (int y = 0; y < 7; y++)
+				for (int x = 0; x < 7; x++)
+					for (int i = 0; i < 10; i++)
+						cadrillage [v, y, x, i] = int.Parse( line.Split (',') [y].Split (';') [x].Split ('|') [i]);
+
+			v++;
+			if (v >= 255)
+				break;
+		}
+
+
+		level = int.Parse(chemin.Split('/')[chemin.Split('/').Length - 1].Split('.')[0].Split('-')[1]) -1;
+		chapitre = int.Parse(chemin.Split('/')[chemin.Split('/').Length - 1].Split('.')[0].Split('-')[0]) -1;
+		vague = 0;
+
+		level_T.text = (level+1).ToString ();
+		chapitre_T.text = (chapitre+1).ToString ();
+		vague_T.text = (vague+1).ToString ();
+
+	
+			
+
+		open.text = "Ouvrir";
+		RefreshCadre ();
+
+	}
+
+
+	public void Inject(){
+
+		if (PlayerPrefs.GetString ("Address.Game", "NULL") == "NULL") {
+			string home = (Environment.OSVersion.Platform == PlatformID.Unix || 
+				Environment.OSVersion.Platform == PlatformID.MacOSX)
+				? Environment.GetEnvironmentVariable("HOME")
+				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+			PlayerPrefs.SetString ("Address.Game", EditorUtility.OpenFolderPanel ("Dossier du Jeu en Développement contenant les niveaux \".lvlcrt\"", home, "Levels"));
+		}
+
+		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Game") + @"\" + (chapitre +1).ToString () + "-" + (level +1).ToString () + ".lvlcrt")) {
+
+				for (int v = 0; v < 255; v++) {
+					string line = "";
+					for (int y = 0; y < 7; y++) {
+						for (int x = 0; x < 7; x++) {
+						for (int i = 0; i < 10; i++) {
+							inject.text = (v + 1).ToString () + " / 255";
+								if (i != 0)
+									line += "|";
+								line += cadrillage [v, y, x, i].ToString ();
+							}
+							if (x < 6)
+								line += ";";
+						}
+						if (y < 6)
+							line += ",";
+					}
+					outputFile.WriteLine (line);
+				}
+		}
+		inject.text = "Injecter";
+
+
+
+	}
+
+	void OnApplicationQuit(){
+		PlayerPrefs.DeleteAll ();
+	}
+
 
 }
