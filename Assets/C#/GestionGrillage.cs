@@ -331,7 +331,7 @@ public class GestionGrillage : MonoBehaviour {
 				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
 			PlayerPrefs.SetString ("Address.Game", EditorUtility.OpenFolderPanel ("Dossier du Jeu en Développement contenant les niveaux \".lvlcrt\"", home, "Levels"));
 		}
-
+		Debug.Log (PlayerPrefs.GetString ("Address.Game"));
 		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Game") + @"\" + (chapitre +1).ToString () + "-" + (level +1).ToString () + ".lvlcrt")) {
 
 				for (int v = 0; v < 255; v++) {
