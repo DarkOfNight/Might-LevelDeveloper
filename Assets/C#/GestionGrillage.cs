@@ -7,7 +7,7 @@ using UnityEditor;
 using System.IO;
 public class GestionGrillage : MonoBehaviour {
 
-	public int[,,,] cadrillage = new int[255,7,7,10];
+	public int[,,,] cadrillage = new int[30,7,7,10];
 	/*
 	 * 0 - type			0 normal 1 infini 2 boss
 	 * 1 - image		0 ... 1 ... 2 ... ...
@@ -46,8 +46,8 @@ public class GestionGrillage : MonoBehaviour {
 		else
 			level--;
 		if (level < 0)
-			level = 254;
-		if (level > 254)
+			level = 29;
+		if (level > 29)
 			level = 0;
 
 		level_T.text = (level + 1).ToString ();
@@ -58,8 +58,8 @@ public class GestionGrillage : MonoBehaviour {
 		else
 			chapitre--;
 		if (chapitre < 0)
-			chapitre = 254;
-		if (chapitre > 254)
+			chapitre = 29;
+		if (chapitre > 29)
 			chapitre = 0;
 
 		chapitre_T.text = (chapitre + 1).ToString ();
@@ -70,8 +70,8 @@ public class GestionGrillage : MonoBehaviour {
 		else
 			vague--;
 		if (vague < 0)
-			vague = 254;
-		if (vague > 254)
+			vague = 29;
+		if (vague > 29)
 			vague = 0;
 
 		vague_T.text = (vague + 1).ToString ();
@@ -163,7 +163,7 @@ public class GestionGrillage : MonoBehaviour {
 	}
 
 	public int TestCadreEmpty(){
-		for (int i = 0; i < 255; i++) {
+		for (int i = 0; i < 30; i++) {
 			bool empty = true;
 			int[,,] var1 = GetVague (i);
 			for (int j = 0; j < 7; j++)
@@ -173,14 +173,14 @@ public class GestionGrillage : MonoBehaviour {
 			if (empty)
 				return i;
 		}
-		return 255;
+		return 30;
 	}
 	
 	// Update is called once per frame
 	public void ResetCadre (bool integral) {
 		if (integral) {
-			cadrillage = new int[255,7,7,10];
-			for (int i = 0; i < 255; i++)
+			cadrillage = new int[30,7,7,10];
+			for (int i = 0; i < 30; i++)
 				for (int j = 0; j < 7; j++)
 					for (int k = 0; k < 7; k++)
 						for (int l = 0; l < 10; l++)
@@ -252,16 +252,23 @@ public class GestionGrillage : MonoBehaviour {
 
 		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Level") + @"\" + (chapitre + 1).ToString() + "-" + (level +1 ).ToString() + ".lvlcrt")) {
 
-			for (int v = 0; v < 255; v++) {
+			for (int v = 0; v < 30; v++) {
 				string line = "";
 				for (int y = 0; y < 7; y++) {
 					for (int x = 0; x < 7; x++) {
 						for (int i = 0; i < 10; i++) {
-							save.text = (v + 1).ToString () + " / 255";
-							if (i != 0)
-								line += "|";
-							line += cadrillage [v, y, x, i].ToString ();
-							//Debug.Log (cadrillage [v, y, x, i]);
+							save.text = (v + 1).ToString () + " / 30";
+
+							if (cadrillage [v, y, x, i] < 0)
+								line += "---";
+							else {
+
+								if (cadrillage [v, y, x, i] < 100)
+									line += "0";
+								if (cadrillage [v, y, x, i] < 10)
+									line += "0";
+								line += cadrillage [v, y, x, i].ToString ();
+							}
 						}
 						if (x < 6)
 							line += ";";
@@ -293,14 +300,21 @@ public class GestionGrillage : MonoBehaviour {
 
 		int v = 0;
 		foreach (string line in inputFile) {
-			open.text = (v + 1).ToString () + " / 255";
+			open.text = (v + 1).ToString () + " / 30";
 			for (int y = 0; y < 7; y++)
-				for (int x = 0; x < 7; x++)
-					for (int i = 0; i < 10; i++)
-						cadrillage [v, y, x, i] = int.Parse( line.Split (',') [y].Split (';') [x].Split ('|') [i]);
+				for (int x = 0; x < 7; x++) {
+					string infosOpen = line.Split (',') [y].Split (';') [x];
+					for (int i = 0; i < 10; i++) {
+						string infoOpen = infosOpen.Substring (i * 3, 3);
+						if (infoOpen == "---")
+							cadrillage [v, y, x, i] = -1;
+						else
+							cadrillage [v, y, x, i] = int.Parse (infoOpen);
+					}
+				}
 
 			v++;
-			if (v >= 255)
+			if (v >= 30)
 				break;
 		}
 
@@ -334,16 +348,24 @@ public class GestionGrillage : MonoBehaviour {
 		Debug.Log (PlayerPrefs.GetString ("Address.Game"));
 		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Game") + @"\" + (chapitre +1).ToString () + "-" + (level +1).ToString () + ".lvlcrt")) {
 
-				for (int v = 0; v < 255; v++) {
+				for (int v = 0; v < 30; v++) {
 					string line = "";
 					for (int y = 0; y < 7; y++) {
 						for (int x = 0; x < 7; x++) {
 						for (int i = 0; i < 10; i++) {
-							inject.text = (v + 1).ToString () + " / 255";
-								if (i != 0)
-									line += "|";
+							inject.text = (v + 1).ToString () + " / 30";
+
+							if (cadrillage [v, y, x, i] < 0)
+								line += "---";
+							else {
+								
+								if (cadrillage [v, y, x, i] < 100)
+									line += "0";
+								if (cadrillage [v, y, x, i] < 10)
+									line += "0";
 								line += cadrillage [v, y, x, i].ToString ();
 							}
+						}
 							if (x < 6)
 								line += ";";
 						}

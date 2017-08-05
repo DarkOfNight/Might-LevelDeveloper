@@ -320,8 +320,10 @@ public class GestionCustom : MonoBehaviour {
 	}
 
 	public void SavePanel(){
-		if (inputVie.text == string.Empty || int.Parse(inputVie.text) < 0)
+		if (inputVie.text == string.Empty || int.Parse (inputVie.text) < 0)
 			Anc_vie = 1;
+		else if (int.Parse (inputVie.text) > 999)
+			Anc_vie = 999;
 		else
 			Anc_vie = int.Parse(inputVie.text);
 
@@ -333,6 +335,8 @@ public class GestionCustom : MonoBehaviour {
 		inputVie.text = Anc_vie.ToString ();
 		inputNb.text = Anc_nb.ToString ();
 
+		if (type == -1)
+			type = 0;
 
 		Anc_type = type;
 		Anc_posImage = posImage;
