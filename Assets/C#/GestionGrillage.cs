@@ -7,7 +7,29 @@ using UnityEditor;
 using System.IO;
 public class GestionGrillage : MonoBehaviour {
 
-	public int[,,,] cadrillage = new int[30,7,7,10];
+
+	[Serializable]
+	public class CadreInformationLevel
+	{
+		List<List<List<List<int>>>> information = new List<List<List<List<int>>>>();
+		//public int[,,,] information = new int[30,7,7,10];
+		public DateTime creation = DateTime.UtcNow;
+		public DateTime modification = DateTime.UtcNow;
+		public int level = 0;
+		public int chapitre = 0;
+		public int vague = 0;
+
+		public CadreInformationLevel()
+		{
+			for (int i = 0; i < 30; i ++)
+				for (int j = 0; j < 30; j ++)
+					for (int k = 0; k < 30; k ++)
+						for (int l = 0; l < 30; l ++)
+							information[i][j][k][l] = -1;
+		}
+	}
+
+	public CadreInformationLevel cadrillage = new CadreInformationLevel();
 	/*
 	 * 0 - type			0 normal 1 infini 2 boss
 	 * 1 - image		0 ... 1 ... 2 ... ...
@@ -81,9 +103,9 @@ public class GestionGrillage : MonoBehaviour {
 	public void RefreshCadre(){
 		for (int i = 0; i < 7; i++)
 			for (int j = 0; j < 7; j++) {
-				if (cadrillage [vague, i, j, 0] == 2)
+				if (cadrillage.information [vague][i][j][0] == 2)
 					ApplyCadre (i, j, true);
-				else if (cadrillage [vague, i, j, 0] >= 0)
+				else if (cadrillage.information [vague, i, j, 0] >= 0)
 					ApplyCadre (i, j, false);
 				else EmptyCadre (i, j);
 			}
@@ -93,45 +115,45 @@ public class GestionGrillage : MonoBehaviour {
 		switch (y) {
 		case 0:
 			if (isBoss)
-				CadreImage0 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+				CadreImage0 [x].sprite = boss[cadrillage.information[vague, y, x, 1]];
 			else
-				CadreImage0 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+				CadreImage0 [x].sprite = ennemi[cadrillage.information[vague, y, x, 1]];
 			break;
 		case 1:
 			if (isBoss)
-				CadreImage1 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+				CadreImage1 [x].sprite = boss[cadrillage.information[vague, y, x, 1]];
 			else
-				CadreImage1 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+				CadreImage1 [x].sprite = ennemi[cadrillage.information[vague, y, x, 1]];
 			break;
 		case 2:
 			if (isBoss)
-				CadreImage2 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+				CadreImage2 [x].sprite = boss[cadrillage.information[vague, y, x, 1]];
 			else
-				CadreImage2 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+				CadreImage2 [x].sprite = ennemi[cadrillage.information[vague, y, x, 1]];
 			break;
 		case 3:
 			if (isBoss)
-				CadreImage3 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+				CadreImage3 [x].sprite = boss[cadrillage.information[vague, y, x, 1]];
 			else
-				CadreImage3 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+				CadreImage3 [x].sprite = ennemi[cadrillage.information[vague, y, x, 1]];
 			break;
 		case 4:
 			if (isBoss)
-				CadreImage4 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+				CadreImage4 [x].sprite = boss[cadrillage.information[vague, y, x, 1]];
 			else
-				CadreImage4 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+				CadreImage4 [x].sprite = ennemi[cadrillage.information[vague, y, x, 1]];
 			break;
 		case 5:
 			if (isBoss)
-				CadreImage5 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+				CadreImage5 [x].sprite = boss[cadrillage.information[vague, y, x, 1]];
 			else
-				CadreImage5 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+				CadreImage5 [x].sprite = ennemi[cadrillage.information[vague, y, x, 1]];
 			break;
 		case 6:
 			if (isBoss)
-				CadreImage6 [x].sprite = boss[cadrillage[vague, y, x, 1]];
+				CadreImage6 [x].sprite = boss[cadrillage.information[vague, y, x, 1]];
 			else
-				CadreImage6 [x].sprite = ennemi[cadrillage[vague, y, x, 1]];
+				CadreImage6 [x].sprite = ennemi[cadrillage.information[vague, y, x, 1]];
 			break;
 		}
 	}
@@ -179,18 +201,18 @@ public class GestionGrillage : MonoBehaviour {
 	// Update is called once per frame
 	public void ResetCadre (bool integral) {
 		if (integral) {
-			cadrillage = new int[30,7,7,10];
+			cadrillage.information = new int[30,7,7,10];
 			for (int i = 0; i < 30; i++)
 				for (int j = 0; j < 7; j++)
 					for (int k = 0; k < 7; k++)
 						for (int l = 0; l < 10; l++)
-							cadrillage [i, j, k, l] = -1;
+							cadrillage.information [i, j, k, l] = -1;
 		} else {
 
 			for (int j = 0; j < 7; j++)
 				for (int k = 0; k < 7; k++)
 					for (int l = 0; l < 10; l++)
-						cadrillage [vague, j, k, l] = -1;
+						cadrillage.information [vague, j, k, l] = -1;
 		}
 		RefreshCadre ();
 	}
@@ -200,7 +222,7 @@ public class GestionGrillage : MonoBehaviour {
 		for (int j = 0; j < 7; j++)
 			for (int k = 0; k < 7; k++)
 				for (int l = 0; l < 10; l++)
-					var2[j, k, l] =  cadrillage [var1, j, k, l];	
+					var2[j, k, l] =  cadrillage.information [var1, j, k, l];	
 		return var2;
 	}
 
@@ -208,13 +230,13 @@ public class GestionGrillage : MonoBehaviour {
 		for (int j = 0; j < 7; j++)
 			for (int k = 0; k < 7; k++)
 				for (int l = 0; l < 10; l++)
-					cadrillage [var2, j, k, l] = var1[j, k, l];	
+					cadrillage.information [var2, j, k, l] = var1[j, k, l];	
 	}
 
 	public int[] GetInfo(int var1, int var2, int var3){
 		int[] var4 = new int[10];
 			for (int l = 0; l < 10; l++)
-				var4[l] = cadrillage [var1, var2, var3, l];
+				var4[l] = cadrillage.information [var1, var2, var3, l];
 		return var4;
 	}
 
@@ -223,9 +245,9 @@ public class GestionGrillage : MonoBehaviour {
 	public void SetInfo(int[] var1, int var2, int var3, int var4){
 		for (int l = 0; l < 10; l++) {
 			try{
-			cadrillage [var2, var3, var4, l] = var1 [l];
+			cadrillage.information [var2, var3, var4, l] = var1 [l];
 			}catch{
-				cadrillage [var2, var3, var4, l] = -1;
+				cadrillage.information [var2, var3, var4, l] = -1;
 			}
 		}
 	}
@@ -241,43 +263,21 @@ public class GestionGrillage : MonoBehaviour {
 
 	public void SaveAs(){
 
+		cadrillage.vague = TestCadreEmpty ();
+		cadrillage.chapitre = chapitre + 1;
+		cadrillage.level = level + 1;
+		cadrillage.modification = DateTime.UtcNow;
 
 		if (PlayerPrefs.GetString ("Address.Level", "NULL") == "NULL") {
 			string home = (Environment.OSVersion.Platform == PlatformID.Unix || 
 				Environment.OSVersion.Platform == PlatformID.MacOSX)
 				? Environment.GetEnvironmentVariable("HOME")
 				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
-			PlayerPrefs.SetString ("Address.Level", EditorUtility.OpenFolderPanel ("Dossier des niveaux \".lvlcrt\" (Hors Jeu)", home, "Levels"));
+			PlayerPrefs.SetString ("Address.Level", EditorUtility.OpenFolderPanel ("Dossier des niveaux Editeur \".lvlcrt\"", home, "Levels"));
 		}
 
-		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Level") + @"\" + (chapitre + 1).ToString() + "-" + (level +1 ).ToString() + ".lvlcrt")) {
-
-			for (int v = 0; v < 30; v++) {
-				string line = "";
-				for (int y = 0; y < 7; y++) {
-					for (int x = 0; x < 7; x++) {
-						for (int i = 0; i < 10; i++) {
-							save.text = (v + 1).ToString () + " / 30";
-
-							if (cadrillage [v, y, x, i] < 0)
-								line += "---";
-							else {
-
-								if (cadrillage [v, y, x, i] < 100)
-									line += "0";
-								if (cadrillage [v, y, x, i] < 10)
-									line += "0";
-								line += cadrillage [v, y, x, i].ToString ();
-							}
-						}
-						if (x < 6)
-							line += ";";
-					}
-					if (y < 6)
-						line += ",";
-				}
-				outputFile.WriteLine (line);
-			}
+		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Level") + @"\" + cadrillage.chapitre.ToString() + "-" + cadrillage.level.ToString() + ".lvlcrt")) {
+			outputFile.Write (JsonUtility.ToJson(cadrillage, true));
 		}
 		save.text = "Enregistrer";
 
@@ -293,39 +293,18 @@ public class GestionGrillage : MonoBehaviour {
 				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
 		string chemin = EditorUtility.OpenFilePanel ("Sélectionner le Niveau Might", home, "lvlcrt");
 
+		string inputFile = System.IO.File.ReadAllText(chemin);
+
+		cadrillage = JsonUtility.FromJson<CadreInformationLevel>(inputFile);
 
 
-
-		string[] inputFile = System.IO.File.ReadAllLines(chemin);
-
-		int v = 0;
-		foreach (string line in inputFile) {
-			open.text = (v + 1).ToString () + " / 30";
-			for (int y = 0; y < 7; y++)
-				for (int x = 0; x < 7; x++) {
-					string infosOpen = line.Split (',') [y].Split (';') [x];
-					for (int i = 0; i < 10; i++) {
-						string infoOpen = infosOpen.Substring (i * 3, 3);
-						if (infoOpen == "---")
-							cadrillage [v, y, x, i] = -1;
-						else
-							cadrillage [v, y, x, i] = int.Parse (infoOpen);
-					}
-				}
-
-			v++;
-			if (v >= 30)
-				break;
-		}
-
-
-		level = int.Parse(chemin.Split('/')[chemin.Split('/').Length - 1].Split('.')[0].Split('-')[1]) -1;
-		chapitre = int.Parse(chemin.Split('/')[chemin.Split('/').Length - 1].Split('.')[0].Split('-')[0]) -1;
+		level = cadrillage.level -1;
+		chapitre = cadrillage.chapitre -1;
 		vague = 0;
 
-		level_T.text = (level+1).ToString ();
-		chapitre_T.text = (chapitre+1).ToString ();
-		vague_T.text = (vague+1).ToString ();
+		level_T.text = level.ToString ();
+		chapitre_T.text = chapitre.ToString ();
+		vague_T.text = vague.ToString ();
 
 	
 			
@@ -338,6 +317,12 @@ public class GestionGrillage : MonoBehaviour {
 
 	public void Inject(){
 
+		cadrillage.vague = TestCadreEmpty ();
+		cadrillage.chapitre = chapitre + 1;
+		cadrillage.level = level + 1;
+		cadrillage.modification = DateTime.UtcNow;
+
+
 		if (PlayerPrefs.GetString ("Address.Game", "NULL") == "NULL") {
 			string home = (Environment.OSVersion.Platform == PlatformID.Unix || 
 				Environment.OSVersion.Platform == PlatformID.MacOSX)
@@ -346,34 +331,8 @@ public class GestionGrillage : MonoBehaviour {
 			PlayerPrefs.SetString ("Address.Game", EditorUtility.OpenFolderPanel ("Dossier du Jeu en Développement contenant les niveaux \".lvlcrt\"", home, "Levels"));
 		}
 		Debug.Log (PlayerPrefs.GetString ("Address.Game"));
-		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Game") + @"\" + (chapitre +1).ToString () + "-" + (level +1).ToString () + ".lvlcrt")) {
-
-				for (int v = 0; v < 30; v++) {
-					string line = "";
-					for (int y = 0; y < 7; y++) {
-						for (int x = 0; x < 7; x++) {
-						for (int i = 0; i < 10; i++) {
-							inject.text = (v + 1).ToString () + " / 30";
-
-							if (cadrillage [v, y, x, i] < 0)
-								line += "---";
-							else {
-								
-								if (cadrillage [v, y, x, i] < 100)
-									line += "0";
-								if (cadrillage [v, y, x, i] < 10)
-									line += "0";
-								line += cadrillage [v, y, x, i].ToString ();
-							}
-						}
-							if (x < 6)
-								line += ";";
-						}
-						if (y < 6)
-							line += ",";
-					}
-					outputFile.WriteLine (line);
-				}
+		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Game") + @"\" + cadrillage.chapitre.ToString () + "-" + cadrillage.level.ToString () + ".lvlcrt")) {
+			outputFile.Write (JsonUtility.ToJson(cadrillage, true));
 		}
 		inject.text = "Injecter";
 
