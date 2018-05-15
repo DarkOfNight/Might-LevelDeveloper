@@ -11,21 +11,67 @@ public class GestionGrillage : MonoBehaviour {
 	[Serializable]
 	public class CadreInformationLevel
 	{
-		List<List<List<List<int>>>> information = new List<List<List<List<int>>>>();
-		//public int[,,,] information = new int[30,7,7,10];
+		public int[,,,] information = new int[30,7,7,10];
+		public List<string> cadrillage_final = new List<string>();
 		public DateTime creation = DateTime.UtcNow;
 		public DateTime modification = DateTime.UtcNow;
+		public string date_creation;
+		public string date_modification;
 		public int level = 0;
 		public int chapitre = 0;
 		public int vague = 0;
 
-		public CadreInformationLevel()
+		public void InfoToFile()
 		{
-			for (int i = 0; i < 30; i ++)
-				for (int j = 0; j < 30; j ++)
-					for (int k = 0; k < 30; k ++)
-						for (int l = 0; l < 30; l ++)
-							information[i][j][k][l] = -1;
+			this.cadrillage_final.Clear();
+			for (int v = 0; v < 30; v++) {
+				string serial = "";
+				for (int i = 0; i < 7; i++)
+					for (int j = 0; j < 7; j++)
+						for (int k = 0; k < 10; k++)
+						{
+							if (this.information [v, i, j, k] < 0)
+								serial += "---";
+							else
+								serial += this.information [v, i, j, k].ToString ("D3");
+						}
+				this.cadrillage_final.Add (serial);
+			}
+
+		}
+		public void FileToInfo()
+		{
+			this.information = new int[30,7,7,10];
+			for (int v = 0; v < this.cadrillage_final.Capacity; v++)
+			{
+				int pos = 0;
+				for (int i = 0; i < 7; i++)
+					for (int j = 0; j < 7; j++)
+						for (int k = 0; k < 10; k++)
+						{
+							string info = this.cadrillage_final[v].Substring(pos, 3);
+							if (info != "---")
+								Debug.Log (info);
+							if (info == "---")
+								this.information [v, i, j, k] = -1;
+							else
+								this.information [v, i, j, k] = int.Parse (info);
+							pos += 3;
+						}
+			}
+
+		}
+
+		public void DateToFile()
+		{
+			this.date_creation = this.creation.ToString ();
+			this.modification = DateTime.UtcNow;
+			this.date_modification = this.modification.ToString ();
+		}
+		public void FileToDate()
+		{
+			this.creation = DateTime.Parse(this.date_creation);
+			this.modification = DateTime.Parse(this.date_modification);
 		}
 	}
 
@@ -102,22 +148,26 @@ public class GestionGrillage : MonoBehaviour {
 
 	public void RefreshCadre(){
 		for (int i = 0; i < 7; i++)
-			for (int j = 0; j < 7; j++) {
-				if (cadrillage.information [vague][i][j][0] == 2)
-					ApplyCadre (i, j, true);
-				else if (cadrillage.information [vague, i, j, 0] >= 0)
-					ApplyCadre (i, j, false);
-				else EmptyCadre (i, j);
-			}
+			for (int j = 0; j < 7; j++)
+				ApplyCadre (i, j, (cadrillage.information [vague, i, j, 0] == 2));
 	}
 
 	void ApplyCadre(int y, int x, bool isBoss){
+		if (cadrillage.information [vague, y, x, 0] < 0 || cadrillage.information [vague, y, x, 1] < 0) {
+			EmptyCadre (y, x);
+			return;
+		}
+
+
+		Debug.Log (vague);
+		Debug.Log (cadrillage.information[vague, y, x, 1]);
+
 		switch (y) {
 		case 0:
 			if (isBoss)
-				CadreImage0 [x].sprite = boss[cadrillage.information[vague, y, x, 1]];
+				CadreImage0 [x].sprite = boss [cadrillage.information [vague, y, x, 1]];
 			else
-				CadreImage0 [x].sprite = ennemi[cadrillage.information[vague, y, x, 1]];
+				CadreImage0 [x].sprite = ennemi [cadrillage.information[vague, y, x, 1]];
 			break;
 		case 1:
 			if (isBoss)
@@ -262,13 +312,15 @@ public class GestionGrillage : MonoBehaviour {
 
 
 	public void SaveAs(){
-
+		
 		cadrillage.vague = TestCadreEmpty ();
 		cadrillage.chapitre = chapitre + 1;
 		cadrillage.level = level + 1;
-		cadrillage.modification = DateTime.UtcNow;
 
-		if (PlayerPrefs.GetString ("Address.Level", "NULL") == "NULL") {
+		cadrillage.InfoToFile ();
+		cadrillage.DateToFile ();
+
+		if (PlayerPrefs.GetString ("Address.Level", string.Empty) == string.Empty) {
 			string home = (Environment.OSVersion.Platform == PlatformID.Unix || 
 				Environment.OSVersion.Platform == PlatformID.MacOSX)
 				? Environment.GetEnvironmentVariable("HOME")
@@ -276,12 +328,13 @@ public class GestionGrillage : MonoBehaviour {
 			PlayerPrefs.SetString ("Address.Level", EditorUtility.OpenFolderPanel ("Dossier des niveaux Editeur \".lvlcrt\"", home, "Levels"));
 		}
 
+		if (PlayerPrefs.GetString ("Address.Level", string.Empty) == string.Empty)
+			return;
+
 		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Level") + @"\" + cadrillage.chapitre.ToString() + "-" + cadrillage.level.ToString() + ".lvlcrt")) {
 			outputFile.Write (JsonUtility.ToJson(cadrillage, true));
 		}
 		save.text = "Enregistrer";
-
-
 	}
 
 
@@ -293,18 +346,22 @@ public class GestionGrillage : MonoBehaviour {
 				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
 		string chemin = EditorUtility.OpenFilePanel ("Sélectionner le Niveau Might", home, "lvlcrt");
 
+		if (chemin == null || chemin == string.Empty)
+			return;
+
 		string inputFile = System.IO.File.ReadAllText(chemin);
 
 		cadrillage = JsonUtility.FromJson<CadreInformationLevel>(inputFile);
-
+		cadrillage.FileToInfo ();
+		cadrillage.FileToDate ();
 
 		level = cadrillage.level -1;
 		chapitre = cadrillage.chapitre -1;
 		vague = 0;
 
-		level_T.text = level.ToString ();
-		chapitre_T.text = chapitre.ToString ();
-		vague_T.text = vague.ToString ();
+		level_T.text = cadrillage.level.ToString ();
+		chapitre_T.text = cadrillage.chapitre.ToString ();
+		vague_T.text = "1";
 
 	
 			
@@ -315,22 +372,29 @@ public class GestionGrillage : MonoBehaviour {
 	}
 
 
+
+
 	public void Inject(){
 
 		cadrillage.vague = TestCadreEmpty ();
 		cadrillage.chapitre = chapitre + 1;
 		cadrillage.level = level + 1;
-		cadrillage.modification = DateTime.UtcNow;
+
+		cadrillage.InfoToFile ();
+		cadrillage.DateToFile ();
 
 
-		if (PlayerPrefs.GetString ("Address.Game", "NULL") == "NULL") {
+		if (PlayerPrefs.GetString ("Address.Game", string.Empty) == string.Empty) {
 			string home = (Environment.OSVersion.Platform == PlatformID.Unix || 
 				Environment.OSVersion.Platform == PlatformID.MacOSX)
 				? Environment.GetEnvironmentVariable("HOME")
 				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
 			PlayerPrefs.SetString ("Address.Game", EditorUtility.OpenFolderPanel ("Dossier du Jeu en Développement contenant les niveaux \".lvlcrt\"", home, "Levels"));
 		}
-		Debug.Log (PlayerPrefs.GetString ("Address.Game"));
+
+		if (PlayerPrefs.GetString ("Address.Game", string.Empty) == string.Empty)
+			return;
+		
 		using (StreamWriter outputFile = new StreamWriter (PlayerPrefs.GetString ("Address.Game") + @"\" + cadrillage.chapitre.ToString () + "-" + cadrillage.level.ToString () + ".lvlcrt")) {
 			outputFile.Write (JsonUtility.ToJson(cadrillage, true));
 		}
