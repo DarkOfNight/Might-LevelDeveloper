@@ -12,7 +12,7 @@ public class GestionGrillage : MonoBehaviour {
 	public class CadreInformationLevel
 	{
 		public int[,,,] information = new int[30,7,7,10];
-		public List<string> cadrillage_final = new List<string>();
+		public List<string> infoSerialized = new List<string>();
 		public DateTime creation = DateTime.UtcNow;
 		public DateTime modification = DateTime.UtcNow;
 		public string date_creation;
@@ -23,7 +23,7 @@ public class GestionGrillage : MonoBehaviour {
 
 		public void InfoToFile()
 		{
-			this.cadrillage_final.Clear();
+			this.infoSerialized.Clear();
 			for (int v = 0; v < 30; v++) {
 				string serial = "";
 				for (int i = 0; i < 7; i++)
@@ -35,21 +35,21 @@ public class GestionGrillage : MonoBehaviour {
 							else
 								serial += this.information [v, i, j, k].ToString ("D3");
 						}
-				this.cadrillage_final.Add (serial);
+				this.infoSerialized.Add (serial);
 			}
 
 		}
 		public void FileToInfo()
 		{
 			this.information = new int[30,7,7,10];
-			for (int v = 0; v < this.cadrillage_final.Capacity; v++)
+			for (int v = 0; v < this.infoSerialized.Capacity; v++)
 			{
 				int pos = 0;
 				for (int i = 0; i < 7; i++)
 					for (int j = 0; j < 7; j++)
 						for (int k = 0; k < 10; k++)
 						{
-							string info = this.cadrillage_final[v].Substring(pos, 3);
+							string info = this.infoSerialized[v].Substring(pos, 3);
 							if (info != "---")
 								Debug.Log (info);
 							if (info == "---")
