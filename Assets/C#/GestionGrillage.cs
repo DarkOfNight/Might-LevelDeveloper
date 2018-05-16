@@ -20,7 +20,7 @@ public class GestionGrillage : MonoBehaviour {
 		public int level = 0;
 		public int chapitre = 0;
 		public int vague = 0;
-
+		//GameObject waza = GameObject.FindGameObjectWithTag
 		public void InfoToFile()
 		{
 			this.infoSerialized.Clear();
@@ -50,8 +50,6 @@ public class GestionGrillage : MonoBehaviour {
 						for (int k = 0; k < 10; k++)
 						{
 							string info = this.infoSerialized[v].Substring(pos, 3);
-							if (info != "---")
-								Debug.Log (info);
 							if (info == "---")
 								this.information [v, i, j, k] = -1;
 							else
@@ -157,10 +155,6 @@ public class GestionGrillage : MonoBehaviour {
 			EmptyCadre (y, x);
 			return;
 		}
-
-
-		Debug.Log (vague);
-		Debug.Log (cadrillage.information[vague, y, x, 1]);
 
 		switch (y) {
 		case 0:
@@ -321,10 +315,9 @@ public class GestionGrillage : MonoBehaviour {
 		cadrillage.DateToFile ();
 
 		if (PlayerPrefs.GetString ("Address.Level", string.Empty) == string.Empty) {
-			string home = (Environment.OSVersion.Platform == PlatformID.Unix || 
-				Environment.OSVersion.Platform == PlatformID.MacOSX)
-				? Environment.GetEnvironmentVariable("HOME")
-				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+			string home = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
+				? Environment.CurrentDirectory + @"\Assets\Levels"	
+				: Environment.CurrentDirectory + @"/Assets/Levels";
 			PlayerPrefs.SetString ("Address.Level", EditorUtility.OpenFolderPanel ("Dossier des niveaux Editeur \".lvlcrt\"", home, "Levels"));
 		}
 
@@ -340,10 +333,9 @@ public class GestionGrillage : MonoBehaviour {
 
 	public void Open(){
 
-			string home = (Environment.OSVersion.Platform == PlatformID.Unix || 
-				Environment.OSVersion.Platform == PlatformID.MacOSX)
-				? Environment.GetEnvironmentVariable("HOME")
-				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+			string home = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
+			? Environment.CurrentDirectory + @"\Assets\Levels"	
+			: Environment.CurrentDirectory + @"/Assets/Levels";
 		string chemin = EditorUtility.OpenFilePanel ("Sélectionner le Niveau Might", home, "lvlcrt");
 
 		if (chemin == null || chemin == string.Empty)
@@ -385,11 +377,10 @@ public class GestionGrillage : MonoBehaviour {
 
 
 		if (PlayerPrefs.GetString ("Address.Game", string.Empty) == string.Empty) {
-			string home = (Environment.OSVersion.Platform == PlatformID.Unix || 
-				Environment.OSVersion.Platform == PlatformID.MacOSX)
-				? Environment.GetEnvironmentVariable("HOME")
-				: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
-			PlayerPrefs.SetString ("Address.Game", EditorUtility.OpenFolderPanel ("Dossier du Jeu en Développement contenant les niveaux \".lvlcrt\"", home, "Levels"));
+			string home = (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
+				? Environment.CurrentDirectory + @"\Assets\Levels"	
+				: Environment.CurrentDirectory + @"/Assets/Levels";
+			PlayerPrefs.SetString ("Address.Game", EditorUtility.OpenFolderPanel ("Dossier du Jeu en Développement contenant les niveaux \".lvlcrt\"", home.Replace("Might-LevelDeveloper", "Might"), "Levels"));
 		}
 
 		if (PlayerPrefs.GetString ("Address.Game", string.Empty) == string.Empty)

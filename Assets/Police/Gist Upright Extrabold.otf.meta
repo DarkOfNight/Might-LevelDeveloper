@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: fcf6882c191851b4cbbe1b20eb464db2
+timeCreated: 1490221099
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Gist Upright Extrabold Demo
+  fontNames:
+  - Gist Upright Extrabold Demo
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8ac9a37ae14680c49b0f9425fec97af1
+timeCreated: 1490216520
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - EnnemiBase: {fileID: 1000013943235612, guid: 36a8d7021ea84a2429a830ec440956be,
+      type: 2}
+  - EnnemiZone: {fileID: 1000011068146158, guid: c8d3da6f854285b42af6656ce5c32d38,
+      type: 2}
+  - Boss: {fileID: 1000013012350554, guid: d50f0139ff5888f40845c252fb926b22, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

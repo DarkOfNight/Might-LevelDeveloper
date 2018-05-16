@@ -1,0 +1,58 @@
+HypeForType Application End User License Agreement
+
+IMPORTANT - PLEASE READ CAREFULLY: This Application (Apps) End User License Agreement (EULA or the Agreement) is a legal agreement between You and HypeForType Ltd. (HFT). We recommend that You save or print a copy of this License for your reference. By placing an order and accepting the HFT Font Software or clicking the Accept button, You acknowledge that You have read all of the terms and conditions of this Agreement and that You agree to them. If You do not agree to be bound by this Agreement, do not purchase this License or take delivery of the software.
+
+You agree to the following:
+1. Grant of License.
+
+This License use of the Font Software in Applications (Apps) only which may be distributed around the world. Upon payment in full, HFT grants You a non-exclusive, non-assignable, non-transferrable and terminable license to (a) embed the Font Software into an iOS, Android based Application in a secure manner and which does not allow an End User to access the Font Software. HFT reserves any and all rights not expressly granted to You under this Agreement.
+2. Use Restrictions.
+
+You may use the Font Software in the number of Applications identified in Your receipt. You are not allowed to embed the Font Software (i) in any Application which permits the creation of output that creates showings of the Font Software or otherwise serves or permits access to the Font Software or in any Application which is a server component in a client-server system. The Font Software may not be embedded in or used in Applications that create typographic products derived from the licensed Font Software.
+3. Back-up Copies. 
+
+You are permitted to make one (1) back-up copy of the Font Software for archival purposes only. Unauthorized sharing, lending, renting, sale, or other unauthorized use or misuse of the Font Software will result in immediate Termination of this License.
+4. Limited Distribution for Internal Use.
+
+You are permitted to make a temporary copy of the Font Software for use in internal testing and development purposes only.
+5. Font Software Modifications.
+
+You may not modify the Font Software for any purpose whatsoever. You agree not to copy the Font Software or create derivative works based upon the Font Software and/or the design of the Font embodied in the Font Software. Except as may be otherwise permitted by the law of your country, you may not decompile, reverse engineer, disassemble, modify, alter or change the software or any associated embedding bits. If You are located in a European Community country or any other country which provides rights substantially similar to the rights regarding the interoperability of software, You may reverse engineer or decompile the Font Software only to the extent that sufficient information is not available for the purpose of creating an interoperable software program (but only for such purpose and only to the extent that sufficient information is not provided in a timely manner free of charge by HFT upon written request).
+6. Exclusive Ownership.
+
+HFT or the owners of the Font Software retain all right and title to the software, trademarks, copyrights and the designs associated with the Font Software. All use of any trademarks or service marks inures to the benefit of HFT or the owner of the marks.
+7. Third Parties.
+
+If You are a design consultancy, advertising agency, or purchasing this License for use by or on behalf of such an entity, the ultimate end user must purchase a License appropriate for the intended use of the Font Software. Specifically, if your client will use copies of the Font Software, your client must also purchase the required license. The license granted herein does not extend to uses by temporary employees, freelancers or independent contractors using the Font Software in professional environments or for other professional uses in excess of the License.
+8. Transfer of License.
+
+You are not permitted to transfer this License all of your rights to another person or company that accepts and agrees to the terms of this License and You agree to destroy any copies in your permission including any copies in the memory of devices.
+9. Warranties.
+
+If the Font Software is found to be defective within ninety (90) days of the date of delivery to the Licensee, HFT will, upon proof of purchase, provide suitable replacements at no charge to the Licensee. The entire risk of performance and quality of the end product created by the Licensee lies with the Licensee. HFT does not warrant that this product will operate with all other software products, or that it will satisfy your requirements. HFT's entire liability to the Licensee will not extend beyond replacement of defective media or refund of the purchase price. You expressly acknowledge and agree that use of the Font Software is at your sole risk. The Font Software and related documentation are provided "AS IS" and, except as noted herein, is without warranty of any kind and HypeForType Ltd. and its affiliated companies (together, "HFT") hereby EXPRESSLY DISCLAIM ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. HFT DOES NOT WARRANT THAT THE OPERATION OF THE FONT SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT THE FONT SOFTWARE IS WITHOUT DEFECTS. THE FONT SOFTWARE IS NOT INTENDED AND WAS NOT DESIGNED OR MANUFACTURED FOR USE IN ANY CIRCUMSTANCES WHERE FAIL-SAFE OPERATION MAY BE REQUIRED. THE FONT SOFTWARE MAY NOT BE USED IN MANUFACTURING, NAVIGATION, AND CONTROL EQUIPMENT OR IN ANY OTHER CIRCUMSTANCES WHERE THE USE OR FAILURE OF THE FONT SOFTWARE COULD LEAD TO DEATH, PERSONAL INJURY, PROPERTY DAMAGE OR SEVERE PHYSICAL OR ENVIRONMENTAL DAMAGE. UNDER NO CIRCUMSTANCES SHALL HFT BE LIABLE TO YOU OR ANY OTHER PARTY FOR ANY SPECIAL, CONSEQUENTIAL, OR INCIDENTAL DAMAGES, INCLUDING LOST PROFITS, SAVINGS OR BUSINESS INTERRUPTION AS A RESULT OF THE USE OF THE FONT SOFTWARE EVEN IF NOTIFIED IN ADVANCE OF SUCH POSSIBILITY. HFT's sole liability to You shall in no event exceed the refunding of the cost of the Font Software or replacement of the Font Software, either at HFT's sole discretion.
+10. Other Law.
+
+Some jurisdictions do not allow the exclusion or limitation of incidental, consequential or special damages, implied warranties or implied warranties. ANY IMPLIED WARRANTY OR CONDITION CREATED BY LAW IS ONLY EFFECTIVE FOR THE THIRTY-DAY (30-DAY) WARRANTY PERIOD. THERE ARE NO WARRANTIES OR CONDITIONS OF ANY KIND AFTER THE THIRTY-DAY (30-DAY) WARRANTY PERIOD. The exclusions noted above may not apply to You. Otherwise, and to the extent permissible by law, You agree that all implied warranties are not effective for more than thirty (30) days.
+11. Termination.
+
+This License Agreement is effective as of the Date of full payment for the License. This License Agreement may be terminated by You at any time by destroying the Font Software and any copies of the Font Software. This Agreement will terminate automatically without notice from HFT, if You fail to comply with any term of this License.
+12. Governing Law.
+
+This Agreement represents the entire Agreement between HFT and You. This Agreement supersedes any other License Agreement which may have been included with the Font Software or previously displayed on the HFT or its Authorized Distributors web sites. This Agreement may only be modified by HFT in a writing. This License Agreement is governed by the laws of the United Kingdom. If You have any questions concerning this Agreement or any matters regarding our products, please email: support@hypefortype.com.
+13. Compliance with Law and Export Restrictions.
+
+You agree to be responsible for your compliance with all laws and regulations, foreign and domestic, relating to the control of exports or the transfer of technology as they may relate to the Font Software.
+14. Severability.
+
+If any provision of this Agreement is declared by a court of competent jurisdiction to be invalid, void or unenforceable, the remaining provisions of this Agreement shall continue in full force and effect, and the invalid provision shall be replaced by HFT with a provision that most closely affects the intent of the invalid provision.
+15. Waiver. 
+
+Waiver of any right(s) at any time shall not constitute an ongoing or permanent waiver of any right(s).
+16. Entire Agreement.
+
+This Agreement constitutes the entire understanding between the parties and supersedes all previous agreements, promises, representations and negotiations between the parties.
+17. Headings.
+
+The captions of the sections of this License Agreement are for convenience only and shall not control or affect the meaning or construction of any of the terms or provisions of this Agreement.
+
+© Copyright, 2016. HypeForType, Ltd. All Rights Reserved

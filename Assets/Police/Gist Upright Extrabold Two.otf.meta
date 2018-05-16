@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 2bf59c7c4a46b3e4aa98c1163bd34027
+timeCreated: 1490221099
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Gist Rough Upr Exbold Two Demo
+  fontNames:
+  - Gist Rough Upr Exbold Two Demo
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

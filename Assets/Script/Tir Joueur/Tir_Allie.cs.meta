@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: 07e8f48baa9c6c34fbc440d013e4919d
+timeCreated: 1488912410
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - TirLTank: {fileID: 1000011764600604, guid: 4bc8f8ce961c88c4492a0b939ddae300, type: 2}
+  - TirCentralMight: {fileID: 1000013972804566, guid: b1e917d89831f4d4198e24c1f623a5a5,
+      type: 2}
+  - TirCentralSnipe: {fileID: 1000011219363500, guid: f8590a3e3dc49174d8131c100e25e63e,
+      type: 2}
+  - TirCentralTank: {fileID: 1000012010879332, guid: 93c2799bd3877514b8c0f3b526800086,
+      type: 2}
+  - TirPulse: {fileID: 1000010877769556, guid: 34b59f5cd1769314dbbe4d098c34c366, type: 2}
+  - MegaPulse: {fileID: 1000011818717476, guid: 7d3db25a1ad9a044b8586f2e1795abcf,
+      type: 2}
+  - SonMight: {fileID: 8300000, guid: 6b27a6660f3a7f64c9a306dfff7baed0, type: 3}
+  - SonSnipe: {fileID: 8300000, guid: 546b6df387d0ec0408ef96120f4ef936, type: 3}
+  - SonTankCentral: {fileID: 8300000, guid: ec4d3fea69cbd19459a00248cdf6d954, type: 3}
+  - SonTankL: {fileID: 8300000, guid: e5bea59fd3ca7ef46bab030e15a33af7, type: 3}
+  - SonPulse: {fileID: 8300000, guid: 7807cefa6910c3947abef736b15f2126, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
