@@ -351,7 +351,7 @@ public class GestionGrillage : MonoBehaviour {
 
 		string inputFile = System.IO.File.ReadAllText(chemin);
 
-		cadrillage = JsonUtility.FromJson<CadreInformationLevel>(inputFile);
+		JsonUtility.FromJsonOverwrite(inputFile, cadrillage);
 		cadrillage.FileToInfo ();
 		cadrillage.FileToDate ();
 
